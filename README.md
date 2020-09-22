@@ -1,5 +1,10 @@
 # todolist
 
+## Usage
+```
+add and delete todoList
+```
+
 ## Project setup
 ```
 npm install

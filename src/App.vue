@@ -15,7 +15,7 @@
         @click="item.completed = !item.completed"
         :class="{'complete':item.completed}"
       )
-        span {{item.text}} {{item.completed}}
+        span {{item.text}}
         button.delete(@click="remove(key)") x
 </template>
 
