@@ -1,9 +1,11 @@
 # todolist
 
-## Usage
-```
-add and delete todoList
-```
+## Features
+1. add and delete todoList
+2. tabs(all, finish, not finish)
+3. search bar
+4. create time, finish time
+5. assign
 
 ## Project setup
 ```
