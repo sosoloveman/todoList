@@ -7,11 +7,21 @@
       li(@click="page='finish'" :class="{'active':page=='finish'}") FINISH
       li(@click="page='not'" :class="{'active':page=='not'}") NOT YET
     div.box
+      input(v-model="search")
+    div.box
       input(v-model="newTodo" @keydown.enter="add")
       button.add(@click="add()") + Add
-    ul.list
+    ul.list(v-if="search==''")
       li(
-        v-for="(item, key) in test"
+        v-for="(item, key) in filterData"
+        @click="item.completed = !item.completed"
+        :class="{'complete':item.completed}"
+      )
+        span {{item.text}}
+        button.delete(@click="remove(key)") x
+    ul.list(v-else)
+      li(
+        v-for="(item, key) in searchData"
         @click="item.completed = !item.completed"
         :class="{'complete':item.completed}"
       )
@@ -26,7 +36,8 @@ export default {
     return {
       page: 'all',
       newTodo: '',
-      todos: []
+      todos: [],
+      search: ''
     }
   },
   methods: {
@@ -39,7 +50,7 @@ export default {
     }
   },
   computed: {
-    test() {
+    filterData() {
       if(this.page == 'all') {
         return this.todos;
       } else if(this.page == 'finish') {
@@ -52,6 +63,27 @@ export default {
         })
       }
     },
+    searchData() {
+      if(this.page == 'finish') {
+        let data = this.todos.filter(item => {
+          return item.completed == true;
+        })
+        return data.filter(item => {
+          return item.text.toLowerCase().includes(this.search.toLowerCase());
+        })
+      } else if(this.page == 'not') {
+        let data = this.todos.filter(item => {
+          return item.completed == false;
+        })
+        return data.filter(item => {
+          return item.text.toLowerCase().includes(this.search.toLowerCase());
+        })
+      } else {
+        return this.todos.filter(item => {
+          return item.text.toLowerCase().includes(this.search.toLowerCase());
+        })
+      }
+    },
     allTasks() {
       return this.todos.length
     },
@@ -61,6 +93,8 @@ export default {
       })
       return notcompleted.length
     }
+  },
+  watch: {
   },
   mounted() {
     if(localStorage.getItem('todos')) {
